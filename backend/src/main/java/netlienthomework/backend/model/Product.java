@@ -13,7 +13,6 @@ import lombok.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemNumber;
 
     @Column(columnDefinition = "TEXT", nullable = false)
