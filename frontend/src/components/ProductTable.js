@@ -48,7 +48,7 @@ function ProductTable({products, keys, searchText, searchLabel}) {
 
     return (
         <TableContainer component={Paper}
-                        sx={{marginTop: "20px", maxHeight: "90vh", opacity: 0.8, borderRadius: "20px"}}>
+                        sx={{marginTop: "20px", marginBottom: "20px", maxHeight: "70vh", opacity: 0.8, borderRadius: "20px"}}>
             <Table sx={{minWidth: 650, padding: "5px"}} aria-label="simple table" stickyHeader={true}>
                 <TableHead>
                     <TableRow>
