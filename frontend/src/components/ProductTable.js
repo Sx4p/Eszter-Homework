@@ -8,24 +8,35 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useEffect, useState} from "react";
 
-function createRow(itemNumber, name, netPrice, valueAddedTax) {
-    return {itemNumber, name, netPrice, valueAddedTax};
+const getHighlightedText = (text, highlight, column, searchLabel) => {
+    if (column === searchLabel) {
+        const parts = text.toString().split(new RegExp(`(${highlight})`, 'gi'));
+        return parts.map((part, i) =>
+            <span key={i} style={part.toLowerCase() === highlight.toLowerCase() ? {
+                fontWeight: 'bold',
+                backgroundColor: "#75c1c4"
+            } : {}}>
+            {part}
+        </span>);
+    } else {
+        return text;
+    }
 }
 
-function ProductTable({products}) {
+const createLabelFromKey = (key) => {
+    return key.split("").map((letter, i) =>
+        i === 0 ? letter.toUpperCase() : letter.toUpperCase() === letter ? " " + letter : letter).join("");
+}
+
+function ProductTable({products, keys, searchText, searchLabel}) {
     const [rows, setRows] = useState([]);
-    const [labels] = useState(["Item Number", "Name", "Net Price", "Value Added Tax"]);
     const [lastLabelSort, setLastLabelSort] = useState(null);
 
     useEffect(() => {
-        const rows = products.map((product) => createRow(product.itemNumber, product.name, product.netPrice, product.valueAddedTax));
-        setRows(rows)
+        setRows(products)
     }, [products])
 
-    function sortProductsByColumn(label) {
-        const key = label.split(" ").map((word, i) =>
-            i === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1)).join("");
-
+    function sortProductsByColumn(key) {
         if (lastLabelSort === key) {
             setRows([...rows].reverse());
         } else {
@@ -41,8 +52,8 @@ function ProductTable({products}) {
             <Table sx={{minWidth: 650, padding: "5px"}} aria-label="simple table" stickyHeader={true}>
                 <TableHead>
                     <TableRow>
-                        {labels.map((label) => (
-                            <TableCell align="right" key={label} sx={{
+                        {keys.map((key) => (
+                            <TableCell align="right" key={key} sx={{
                                 fontSize: 20,
                                 fontWeight: 600,
                                 '&:hover': {
@@ -52,7 +63,7 @@ function ProductTable({products}) {
                                     textAlign: "center",
                                     cursor: "pointer"
                                 }
-                            }} onClick={() => sortProductsByColumn(label)}>{label}
+                            }} onClick={() => sortProductsByColumn(key)}>{createLabelFromKey(key)}
                             </TableCell>))
                         }
 
@@ -64,10 +75,14 @@ function ProductTable({products}) {
                             key={row.name}
                             sx={{'&:hover': {backgroundColor: "rgba(187,221,224,0.55)", color: "white"}}}
                         >
-                            <TableCell align="right">{row.itemNumber}</TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.netPrice}</TableCell>
-                            <TableCell align="right">{row.valueAddedTax}</TableCell>
+                            <TableCell
+                                align="right">{getHighlightedText(row.itemNumber, searchText, "itemNumber", searchLabel)}</TableCell>
+                            <TableCell
+                                align="right">{getHighlightedText(row.name, searchText, "name", searchLabel)}</TableCell>
+                            <TableCell
+                                align="right">{getHighlightedText(row.netPrice, searchText, "netPrice", searchLabel)}</TableCell>
+                            <TableCell
+                                align="right">{getHighlightedText(row.valueAddedTax, searchText, "valueAddedTax", searchLabel)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
