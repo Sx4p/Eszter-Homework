@@ -4,11 +4,18 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {Button, Grid, MenuItem} from "@mui/material";
 
 
 function NavBar() {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+            localStorage.clear()
+            navigate("/login")
+    }
+
     return (
         <>
             <AppBar variant="elevation" position={"sticky"}
@@ -41,9 +48,9 @@ function NavBar() {
                             fontWeight: '600'
 
                         }}>
-                            user
+                            {localStorage.getItem("username")}
                         </Typography>
-                        <Button sx={{backgroundColor: "white", borderRadius: "50px", opacity: 0.8}}>
+                        <Button sx={{backgroundColor: "white", borderRadius: "50px", opacity: 0.8}} onClick={handleLogout}>
                             <LogoutIcon sx={{color: "black"}}/>
                         </Button>
                     </Grid>
