@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {FormControl, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import Paper from "@mui/material/Paper";
+import ExportToPdf from "./ExportToPDF";
 
 const createLabelFromKey = (key) => {
     return key.split("").map((letter, i) =>
         i === 0 ? letter.toUpperCase() : letter.toUpperCase() === letter ? " " + letter : letter).join("");
 }
 
-function SearchBar({keys, handleSearchByLabel}) {
+function SearchBar({keys, handleSearchByLabel, rows}) {
     const [label, setLabel] = useState("");
     const [searchText, setSearchText] = useState("");
 
@@ -53,6 +54,7 @@ function SearchBar({keys, handleSearchByLabel}) {
                         handleSearchByLabel(event.target.value, label)
                     }
                 }}/>
+                <ExportToPdf labels={keys} products={rows}/>
         </Paper>
     );
 }
