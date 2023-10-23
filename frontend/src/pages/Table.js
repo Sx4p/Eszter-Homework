@@ -2,15 +2,7 @@ import React, {useEffect, useState} from 'react';
 import ProductTable from "../components/ProductTable";
 import {CircularProgress, Container} from "@mui/material";
 import SearchBar from "../components/SearchBar";
-
-const fetchProducts = () => {
-    return fetch(`/api/product/`)
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-        })
-}
+import {useNavigate} from "react-router-dom";
 
 const getKeysFromProducts = (products) => {
     if (products.length > 0) {
@@ -19,6 +11,7 @@ const getKeysFromProducts = (products) => {
 }
 
 function Table() {
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [keys, setKeys] = useState([]);
@@ -26,13 +19,33 @@ function Table() {
     const [searchText, setSearchText] = useState("");
     const [searchLabel, setSearchLabel] = useState("");
 
-    useEffect(() => {
-        fetchProducts().then(products => {
-            setProducts(products);
-            setFilteredProducts(products)
-            setKeys(getKeysFromProducts(products))
+    const fetchProducts = () => {
+        return fetch(`/api/product/`, {
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("token"),
+            },
         })
-            .then(() => setIsLoaded(true))
+            .then((res) => {
+                if (res.status === 200) {
+                    setIsLoaded(true);
+                    return res.json();
+                } else {
+                    localStorage.clear();
+                    navigate("/login");
+                    return {};
+                }
+            })
+    }
+    useEffect(() => {
+        if (localStorage.getItem("token") === null) {
+            navigate("/login");
+        } else {
+            fetchProducts().then(products => {
+                setProducts(products);
+                setFilteredProducts(products)
+                setKeys(getKeysFromProducts(products))
+            })
+        }
     }, [])
 
     function searchByLabel(searchText, label) {
@@ -44,11 +57,11 @@ function Table() {
     }
 
     return (
-        <Container sx={{justifyContent: "center", textAlign: "center"}}>
-            <SearchBar keys={keys} handleSearchByLabel={searchByLabel}/>
-            {isLoaded ? <ProductTable products={filteredProducts} keys={keys} searchText={searchText}
-                                      searchLabel={searchLabel}/> : <CircularProgress/>}
-        </Container>
+            <Container sx={{justifyContent: "center", textAlign: "center"}}>
+                {isLoaded && <SearchBar keys={keys} handleSearchByLabel={searchByLabel}/>}
+                {isLoaded ? <ProductTable products={filteredProducts} keys={keys} searchText={searchText}
+                                          searchLabel={searchLabel}/> : <CircularProgress/>}
+            </Container>
     );
 }
 
