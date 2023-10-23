@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ProductTable from "../components/ProductTable";
 import {CircularProgress, Container} from "@mui/material";
-import SearchBar from "../components/SearchBar";
 import {useNavigate} from "react-router-dom";
 
 const getKeysFromProducts = (products) => {
@@ -13,11 +12,8 @@ const getKeysFromProducts = (products) => {
 function Table() {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
     const [keys, setKeys] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [searchText, setSearchText] = useState("");
-    const [searchLabel, setSearchLabel] = useState("");
 
     const fetchProducts = () => {
         return fetch(`/api/product/`, {
@@ -42,26 +38,15 @@ function Table() {
         } else {
             fetchProducts().then(products => {
                 setProducts(products);
-                setFilteredProducts(products)
                 setKeys(getKeysFromProducts(products))
             })
         }
     }, [])
 
-    function searchByLabel(searchText, label) {
-        setFilteredProducts([...products].filter((product) =>
-            product[label].toString().toLowerCase().includes(searchText.toLowerCase())));
-
-        setSearchText(searchText);
-        setSearchLabel(label);
-    }
-
     return (
-            <Container sx={{justifyContent: "center", textAlign: "center"}}>
-                {isLoaded && <SearchBar keys={keys} handleSearchByLabel={searchByLabel}/>}
-                {isLoaded ? <ProductTable products={filteredProducts} keys={keys} searchText={searchText}
-                                          searchLabel={searchLabel}/> : <CircularProgress/>}
-            </Container>
+        <Container sx={{justifyContent: "center", textAlign: "center"}}>
+            {isLoaded ? <ProductTable products={products} keys={keys}/> : <CircularProgress/>}
+        </Container>
     );
 }
 
