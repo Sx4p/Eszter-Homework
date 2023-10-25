@@ -1,0 +1,45 @@
+version: '3.8'
+name: 'netlient-homework'
+
+services:
+  backend:
+    #image: 'netlientbe:latest'
+    container_name: 'netlientBackend'
+    build:
+      context: .
+      dockerfile: 'DockerfileBE'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://netlientDB:5432/netlientTable
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_SQL_INIT_DATA_LOCATIONS=classpath:/product-data-postgresql.sql
+      - SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION=true
+      - SPRING_SQL_INIT_MODE=always
+      - JWT_SECRET_KEY=5dbb696e48134d92bdd2d78f717adf2ab3415FASZ2466c516ee7c03016e511b0
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: netlientDB
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=netlientTable
+  
+  frontend:
+    #image: 'netlientfe:latest'
+    build:
+      context: .
+      dockerfile: DockerfileFE
+    container_name: netlientFrontend
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    depends_on:
+      - backend

@@ -1,0 +1,15 @@
+FROM node as reactbuild
+WORKDIR /febuild
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ .
+RUN npm run build
+
+FROM node
+WORKDIR /feserver
+COPY feserver/package*.json ./
+RUN npm install
+COPY feserver/ .
+COPY --from=reactbuild febuild/build/ ./static
+EXPOSE 3000
+CMD ["node", "server.js"]
