@@ -5,7 +5,10 @@
 
 <div align="center">
 
-<h3 align="center">Netlient Homework</h3>
+<h3 align="center">Eszter Homework</h3>
+ <p align="center">
+    This project is a custom homework assignment that I received through an application.
+  </p>
 
 </div>
 
@@ -82,9 +85,9 @@ Follow this guide to run and try the application.
 1. Open the terminal.
 2. Clone the repository.
     ```sh
-    git clone https://github.com/Sx4p/NetlientHomework.git
+    git clone https://github.com/Sx4p/Eszter-Homework.git
     ```
-3. Navigate into the project folder with ``cd NetlientHomework`` command.
+3. Navigate into the project folder with ``cd Eszter-Homework`` command.
 4. Use the following command for building and running the application:
    ```sh
     docker-compose up -d
@@ -100,15 +103,15 @@ Follow this guide to run and try the application.
 Eszter Gyöngyvér Erdélyi -  esztergyerdelyi@gmail.com
 <br />
 
-Project Link: https://github.com/Sx4p/NetlientHomework
+Project Link: https://github.com/Sx4p/Eszter-Homework
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/Sx4p/NetlientHomework.svg?style=for-the-badge
-[contributors-url]: https://github.com/Sx4p/NetlientHomework/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/Sx4p/Eszter-Homework.svg?style=for-the-badge
+[contributors-url]: https://github.com/Sx4p/Eszter-Homework/graphs/contributors
 
 [linkedin-shield-eszter]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url-eszter]: https://www.linkedin.com/in/eszter-erdelyi/
