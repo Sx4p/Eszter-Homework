@@ -17,11 +17,15 @@ const getHighlightedText = (text, highlight, column, searchLabel) => {
                 fontWeight: 'bold',
                 backgroundColor: "#75c1c4"
             } : {}}>
-            {part}
-        </span>);
+{part}
+</span>);
     } else {
         return text;
     }
+}
+
+const getKeysFromProduct = (product) => {
+    return Object.keys(product)
 }
 
 const createLabelFromKey = (key) => {
@@ -111,14 +115,11 @@ function ProductTable({products, keys}) {
                                 key={row.name}
                                 sx={{'&:hover': {backgroundColor: "rgba(187,221,224,0.55)", color: "white"}}}
                             >
-                                <TableCell
-                                    align="right">{getHighlightedText(row.itemNumber, searchText, "itemNumber", searchLabel)}</TableCell>
-                                <TableCell
-                                    align="right">{getHighlightedText(row.name, searchText, "name", searchLabel)}</TableCell>
-                                <TableCell
-                                    align="right">{getHighlightedText(row.netPrice, searchText, "netPrice", searchLabel)}</TableCell>
-                                <TableCell
-                                    align="right">{getHighlightedText(row.valueAddedTax, searchText, "valueAddedTax", searchLabel)}</TableCell>
+                                {getKeysFromProduct(row).map((key) => (
+                                    <TableCell key={key}
+                                               align="right">{getHighlightedText(row[key], searchText, key, searchLabel)}
+                                    </TableCell>
+                                ))}
                             </TableRow>
                         ))}
                     </TableBody>
